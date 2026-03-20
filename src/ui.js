@@ -53,13 +53,16 @@ function elementHinzufuegen(pane, typ) {
     const algo = ALGORITHMEN[typ];
     if (!algo) return;
 
-    // 1. Defaults vom Algorithmus holen und Typ anhängen
-    const neueEbene = { typ: typ, rotation: 0, ...algo.erstelleDefaults() };
+    // NEU: Eine eindeutige ID für dieses Objekt generieren (Zeitstempel + Zufallszahl)
+    const id = Date.now() + Math.random();
+
+    // 1. Defaults laden, ID und standardmäßig 'rotation: 0' hinzufügen
+    const neueEbene = { id: id, typ: typ, rotation: 0, ...algo.erstelleDefaults() };
     state.ebenen.push(neueEbene);
 
     // 2. UI-Ordner generieren
     const folder = pane.addFolder({
-        title: `${typ.toUpperCase()} ${state.ebenen.length}`,
+        title: `${typ.toUpperCase()}`, // Den Index weggelassen, da er beim Löschen verwirren würde
         expanded: true
     });
 
@@ -69,6 +72,15 @@ function elementHinzufuegen(pane, typ) {
 
     // 3. Modulspezifische Regler anfordern
     algo.baueUI(folder, neueEbene);
+
+    // 4. NEU: Löschen-Button am Ende des Ordners anfügen
+    folder.addButton({ title: '🗑️ Löschen' }).on('click', () => {
+        // a) Aus dem Array filtern (behält alle Elemente, deren ID nicht die aktuelle ist)
+        state.ebenen = state.ebenen.filter(ebene => ebene.id !== id);
+
+        // b) Den kompletten Ordner aus der Tweakpane-UI entfernen
+        folder.dispose();
+    });
 }
 
 // Kleine Platzhalter für die X/Y Max-Werte (optional, macht die Slider passender)
