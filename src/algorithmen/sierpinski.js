@@ -39,19 +39,19 @@ export const sierpinskiAlgo = {
 
         // Führe die Iterationen aus, um die Punkte zu setzen
         for (let i = 0; i < ebene.iterationen; i++) {
-            // Wähle zufällig eine Ecke (0, 1 oder 2)
-            let ecke = p.floor(p.random(3));
+            // Natives JS statt p.floor und p.random
+            let ecke = Math.floor(Math.random() * 3);
 
-            // p.lerp berechnet die exakte Mitte zwischen zwei Punkten
+            // Manuelle Mittelwertberechnung statt p.lerp
             if (ecke === 0) {
-                px = p.lerp(px, ax, 0.5);
-                py = p.lerp(py, ay, 0.5);
+                px = (px + ax) / 2;
+                py = (py + ay) / 2;
             } else if (ecke === 1) {
-                px = p.lerp(px, bx, 0.5);
-                py = p.lerp(py, by, 0.5);
+                px = (px + bx) / 2;
+                py = (py + by) / 2;
             } else {
-                px = p.lerp(px, cx, 0.5);
-                py = p.lerp(py, cy, 0.5);
+                px = (px + cx) / 2;
+                py = (py + cy) / 2;
             }
 
             p.point(px, py);

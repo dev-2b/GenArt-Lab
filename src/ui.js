@@ -27,13 +27,13 @@ export function setupUI(p5Instanz) {
     globalFolder.addBinding(state, 'transparenz', { label: 'Transparent' });
 
     globalFolder.addBinding(state, 'exportFormat', {
-        options: { PNG: 'png', JPEG: 'jpg' },
+        options: { PNG: 'png', JPEG: 'jpg', SVG: 'svg' }, // SVG hinzugefügt
         label: 'Format'
     });
 
     // Reicht Instanz und Format an download.js weiter
     globalFolder.addButton({ title: '💾 Als Bild speichern' }).on('click', () => {
-        downloadImage(p5Instanz, state.exportFormat);
+        downloadImage(p5Instanz, state, ALGORITHMEN);
     });
 
     const addFolder = pane.addFolder({ title: 'Element hinzufügen' });
