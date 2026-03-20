@@ -1,0 +1,21 @@
+# GenArt-Lab: Feature Backlog & Ideen
+
+## 1. Ebenen-Management (Z-Index)
+* [ ] **Ebenenreihenfolge ändern:** Objekte nach vorne oder hinten verschieben (später erstellte Objekte können unter früheren liegen).
+  * *Technischer Ansatz:* Position des Objekts im `state.ebenen` Array verändern, da p5.js strikt in der Reihenfolge des Arrays zeichnet.
+
+## 2. Schnellausrichtung (Canvas)
+* [ ] **Zentrieren:** Objekt exakt in der Mitte der Zeichenfläche platzieren.
+* [ ] **Goldener Schnitt:** Objekt nach den Proportionen des Goldenen Schnitts auf dem Canvas ausrichten.
+  * *Technischer Ansatz:* Button-Klick im Tweakpane-Ordner überschreibt die `x` und `y` Werte des Objekts basierend auf den aktuellen Canvas-Dimensionen.
+
+## 3. Relative Ausrichtung (Objekte zueinander)
+* [ ] **Gleiche X-Achse:** Ausgewählte Objekte auf einer vertikalen Linie ausrichten.
+* [ ] **Gleiche Y-Achse:** Ausgewählte Objekte auf einer horizontalen Linie ausrichten.
+* [ ] **Gleichmäßige Verteilung:** Den Abstand zwischen drei oder mehr Objekten auf einer Achse angleichen.
+  * *Technischer Ansatz:* Erfordert eine Mehrfachauswahl (z. B. Checkbox in jedem Ebenen-Ordner), um Werte über mehrere Objekte hinweg zu berechnen und neu zuzuweisen.
+
+## 4. Gruppierung & Bulk-Edit
+* [ ] **Gruppen erstellen:** Mehrere Objekte zu einer logischen Einheit zusammenfassen.
+* [ ] **Zentrale Steuerung:** Gemeinsame Eigenschaften (Farbe, Position, Rotation) für alle Objekte der Gruppe gleichzeitig über einen zentralen Regler ändern.
+  * *Technischer Ansatz:* Anpassung des Datenmodells. Eine Ebene kann den Typ "Gruppe" erhalten und ein eigenes Array von Unter-Elementen (`children`) verwalten.
