@@ -45,7 +45,7 @@ function elementHinzufuegen(pane, typ) {
     if (!algo) return;
 
     // 1. Defaults vom Algorithmus holen und Typ anhängen
-    const neueEbene = { typ: typ, ...algo.erstelleDefaults() };
+    const neueEbene = { typ: typ, rotation: 0, ...algo.erstelleDefaults() };
     state.ebenen.push(neueEbene);
 
     // 2. UI-Ordner generieren
@@ -56,6 +56,7 @@ function elementHinzufuegen(pane, typ) {
 
     folder.addBinding(neueEbene, 'x', { min: 0, max: p5_width_placeholder || 2000, step: 1, label: 'X Pos' });
     folder.addBinding(neueEbene, 'y', { min: 0, max: p5_height_placeholder || 2000, step: 1, label: 'Y Pos' });
+    folder.addBinding(neueEbene, 'rotation', { min: 0, max: 360, step: 1, label: 'Drehung' });
 
     // 3. Modulspezifische Regler anfordern
     algo.baueUI(folder, neueEbene);
