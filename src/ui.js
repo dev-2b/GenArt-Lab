@@ -13,20 +13,32 @@ export const ALGORITHMEN = {
 
 export const state = {
     hintergrund: '#1a1a1a',
+    transparenz: false,  // NEU: Toggle für transparenten Hintergrund
+    exportFormat: 'png', // NEU: Standard-Format
     ebenen: [],
     auswahlNeu: 'baum' // Standard-Auswahl für neues Element aktuell Baum
 };
 
-export function setupUI() {
+export function setupUI(p5Instanz) {
     const pane = new Pane({ title: 'GenArt-Lab' });
 
     const globalFolder = pane.addFolder({ title: 'Globale Einstellungen' });
     globalFolder.addBinding(state, 'hintergrund', { label: 'Hintergrund' });
-    globalFolder.addButton({ title: 'Als Bild speichern' }).on('click', downloadImage);
+    globalFolder.addBinding(state, 'transparenz', { label: 'Transparent' });
+
+    globalFolder.addBinding(state, 'exportFormat', {
+        options: { PNG: 'png', JPEG: 'jpg' },
+        label: 'Format'
+    });
+
+    // Reicht Instanz und Format an download.js weiter
+    globalFolder.addButton({ title: '💾 Als Bild speichern' }).on('click', () => {
+        downloadImage(p5Instanz, state.exportFormat);
+    });
 
     const addFolder = pane.addFolder({ title: 'Element hinzufügen' });
 
-    // NEU: Wir generieren die Dropdown-Optionen dynamisch aus der Registry
+    //Wir generieren die Dropdown-Optionen dynamisch aus der Registry
     const typOptionen = {};
     for (const key in ALGORITHMEN) {
         // Macht aus 'baum' -> 'Baum' für die Anzeige im Menü
