@@ -19,6 +19,7 @@ export const sketch = (p) => {
             if (algo) {
                 p.push();
                 p.translate(ebene.x, ebene.y);
+                p.rotate(ebene.rotation);
 
                 // Die Render-Funktion des jeweiligen Moduls aufrufen
                 algo.zeichne(p, ebene);
