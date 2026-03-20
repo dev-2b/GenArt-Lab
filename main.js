@@ -1,9 +1,10 @@
 import p5 from 'p5';
+import p5Svg from 'p5.js-svg'; // NEU: SVG Plugin importieren
 import { setupUI } from './src/ui.js';
 import { sketch } from './src/sketch.js';
 
-// 1. p5 Engine starten und in einer Variable speichern
-const myP5 = new p5(sketch);
+// NEU: Das Plugin in p5 einklinken
+p5Svg(p5);
 
-// 2. Die Instanz an die UI übergeben
+const myP5 = new p5(sketch);
 setupUI(myP5);

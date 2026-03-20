@@ -2,6 +2,7 @@ import { state, ALGORITHMEN, setCanvasSize } from './ui.js';
 
 export const sketch = (p) => {
     p.setup = () => {
+        // NEU: p.SVG als dritter Parameter
         const canvas = p.createCanvas(p.windowWidth * 0.8, p.windowHeight * 0.8);
         canvas.parent('canvas-container');
         p.angleMode(p.DEGREES);
