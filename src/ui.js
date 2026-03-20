@@ -13,7 +13,8 @@ export const ALGORITHMEN = {
 
 export const state = {
     hintergrund: '#1a1a1a',
-    ebenen: []
+    ebenen: [],
+    auswahlNeu: 'baum' // Standard-Auswahl für neues Element aktuell Baum
 };
 
 export function setupUI() {
@@ -25,19 +26,27 @@ export function setupUI() {
 
     const addFolder = pane.addFolder({ title: 'Element hinzufügen' });
 
-    // Dynamischer Button für den Baum
-    addFolder.addButton({ title: '+ Neuer Baum' }).on('click', () => {
-        elementHinzufuegen(pane, 'baum');
+    // NEU: Wir generieren die Dropdown-Optionen dynamisch aus der Registry
+    const typOptionen = {};
+    for (const key in ALGORITHMEN) {
+        // Macht aus 'baum' -> 'Baum' für die Anzeige im Menü
+        const anzeigeName = key.charAt(0).toUpperCase() + key.slice(1);
+        typOptionen[anzeigeName] = key;
+    }
+
+    // Das Dropdown-Menü
+    addFolder.addBinding(state, 'auswahlNeu', {
+        options: typOptionen,
+        label: 'Form'
     });
 
-    // Dynamischer Button für das Sierpinski-Dreieck
-    addFolder.addButton({ title: '+ Neues Sierpinski-Dreieck' }).on('click', () => {
-        elementHinzufuegen(pane, 'sierpinski');
+    // Ein einzelner Button, der das ausgewählte Element liest und hinzufügt
+    addFolder.addButton({ title: '+ Hinzufügen' }).on('click', () => {
+        elementHinzufuegen(pane, state.auswahlNeu);
     });
-
     // Start-Element
-    elementHinzufuegen(pane, 'baum');
-    elementHinzufuegen(pane, 'sierpinski');
+    // elementHinzufuegen(pane, 'baum');
+    // elementHinzufuegen(pane, 'sierpinski');
 }
 
 function elementHinzufuegen(pane, typ) {
