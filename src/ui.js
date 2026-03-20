@@ -4,9 +4,11 @@ import { downloadImage } from './download.js';
 
 // HIER melden wir neue Algorithmen an
 import { baumAlgo } from './algorithmen/baum.js';
+import { sierpinskiAlgo } from './algorithmen/sierpinski.js';
 
 export const ALGORITHMEN = {
-    [baumAlgo.typ]: baumAlgo
+    [baumAlgo.typ]: baumAlgo,
+    [sierpinskiAlgo.typ]: sierpinskiAlgo
 };
 
 export const state = {
@@ -28,8 +30,14 @@ export function setupUI() {
         elementHinzufuegen(pane, 'baum');
     });
 
+    // Dynamischer Button für das Sierpinski-Dreieck
+    addFolder.addButton({ title: '+ Neues Sierpinski-Dreieck' }).on('click', () => {
+        elementHinzufuegen(pane, 'sierpinski');
+    });
+
     // Start-Element
     elementHinzufuegen(pane, 'baum');
+    elementHinzufuegen(pane, 'sierpinski');
 }
 
 function elementHinzufuegen(pane, typ) {
