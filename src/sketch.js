@@ -1,46 +1,53 @@
-import { PARAMS } from './ui.js';
+import { state } from './ui.js';
 
 export const sketch = (p) => {
     p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth * 0.8, p.windowHeight * 0.8);
         canvas.parent('canvas-container');
-        p.angleMode(p.DEGREES); // Wir rechnen in Grad statt in Bogenmaß (leichter verständlich)
+        p.angleMode(p.DEGREES);
     };
 
     p.draw = () => {
-        p.background(PARAMS.hintergrund);
-        p.stroke(PARAMS.farbe);
+        p.background(state.hintergrund);
 
-        // Den Nullpunkt (0,0) des Koordinatensystems in die Mitte des unteren Bildschirmrands verschieben
-        p.translate(p.width / 2, p.height);
+        // Schleife durch alle Objekte auf der Leinwand
+        for (let i = 0; i < state.ebenen.length; i++) {
+            const ebene = state.ebenen[i];
 
-        // Die rekursive Funktion für den Stamm starten
-        zeichneAst(PARAMS.startLaenge, PARAMS.tiefe);
+            // Zustand vor dem Zeichnen dieses spezifischen Objekts speichern
+            p.push();
+
+            // Nullpunkt an die X/Y Koordinaten des Objekts verschieben
+            p.translate(ebene.x, ebene.y);
+
+            if (ebene.typ === 'baum') {
+                p.stroke(ebene.farbe);
+                zeichneAst(ebene.startLaenge, ebene.tiefe, ebene.winkel, ebene.verkuerzung);
+            }
+            // Hier kommen später "else if (ebene.typ === 'kreis')" etc. hin
+
+            // Zustand nach dem Zeichnen wiederherstellen
+            p.pop();
+        }
     };
 
-    function zeichneAst(laenge, tiefe) {
-        // Abbruchbedingung: Wenn Tiefe 0 erreicht ist, stoppt die Rekursion für diesen Zweig
+    // Die Funktion erwartet jetzt die Parameter als Argumente,
+    // da sie nicht mehr aus einem einzigen globalen Objekt kommen.
+    function zeichneAst(laenge, tiefe, winkel, verkuerzung) {
         if (tiefe === 0) return;
 
-        // Je geringer die Tiefe, desto dünner der Ast
         p.strokeWeight(tiefe);
-
-        // Eine Linie nach "oben" zeichnen (negative Y-Richtung)
         p.line(0, 0, 0, -laenge);
-
-        // Den Nullpunkt an das Ende der gerade gezeichneten Linie verschieben
         p.translate(0, -laenge);
 
-        // Rechten Ast zeichnen
-        p.push();                 // Aktuelles Koordinatensystem (Position & Drehung) speichern
-        p.rotate(PARAMS.winkel);  // Nach rechts drehen
-        zeichneAst(laenge * PARAMS.verkuerzung, tiefe - 1); // Funktion ruft sich selbst auf (kürzer, Tiefe - 1)
-        p.pop();                  // Zum gespeicherten Koordinatensystem zurückkehren
-
-        // Linken Ast zeichnen
         p.push();
-        p.rotate(-PARAMS.winkel); // Nach links drehen
-        zeichneAst(laenge * PARAMS.verkuerzung, tiefe - 1);
+        p.rotate(winkel);
+        zeichneAst(laenge * verkuerzung, tiefe - 1, winkel, verkuerzung);
+        p.pop();
+
+        p.push();
+        p.rotate(-winkel);
+        zeichneAst(laenge * verkuerzung, tiefe - 1, winkel, verkuerzung);
         p.pop();
     }
 
